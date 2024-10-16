@@ -27,7 +27,7 @@ services:
     ports:
       - "3307:3306" # Exponer el puerto 3306 para MariaDB
     networks:
-      - hive4
+      - gestbd_net
     volumes:
       - mariadb-data:/var/lib/mysql
       
@@ -44,7 +44,7 @@ services:
     depends_on:
       - hive4-mariadb
     networks:
-      - hive4
+      - gestbd_net
       
   hive4-postgres:
     image: postgres
@@ -60,7 +60,7 @@ services:
     volumes:
       - hive-db:/var/lib/postgresql
     networks:
-      - hive4
+      - gestbd_net
       
   pgadmin-hive4: # postgres:5432 or localhost:5432 
     image: dpage/pgadmin4
@@ -76,7 +76,7 @@ services:
       - ./datapga:/tmpdata
       - ./dataexample:/var/lib/pgadmin/storage/admin_example.com
     networks:
-          - hive4
+          - gestbd_net
 
   metastore:
     image: apache/hive:${HIVE_VERSION}
@@ -102,7 +102,7 @@ services:
         - ./drivers/postgresql-42.7.4.jar:/opt/hive/lib/postgresql-42.7.4.jar
         - ./drivers/mariadb-java-client-3.4.1.jar:/opt/hive/lib/mariadb-java-client-3.4.1.jar
     networks:
-      - hive4
+      - gestbd_net
 
   hiveserver2:
     image: apache/hive:${HIVE_VERSION}
@@ -123,7 +123,7 @@ services:
       - ./drivers/postgresql-42.7.4.jar:/opt/hive/lib/postgresql-42.7.4.jar
       - ./drivers/mariadb-java-client-3.4.1.jar:/opt/hive/lib/mariadb-java-client-3.4.1.jar
     networks:
-      - hive4
+      - gestbd_net
       
   hue:
     image: gethue/hue:latest
@@ -135,8 +135,10 @@ services:
       - HUE_HIVE_SERVER_PORT=10000        # Puerto del HiveServer2
     ports:
       - "8084:8888"  # El puerto 8084 es para acceder a Hue
+    volumes:
+      - ./hueconf/hue.ini:/usr/share/hue/desktop/conf/hue.ini
     networks:
-      - hive4
+      - gestbd_net
     depends_on:
       - metastore
 
@@ -146,5 +148,5 @@ volumes:
   mariadb-data:
 
 networks:
-  hive4:
-    name: hive4
+  gestbd_net:
+    external: true

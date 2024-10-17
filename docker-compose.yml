@@ -74,7 +74,7 @@ services:
       - hive4-postgres
     volumes:
       - ./datapga:/tmpdata
-      - ./dataexample:/var/lib/pgadmin/storage/admin_example.com
+      - ./dataexample:/var/lib/pgadmin/storage
     networks:
           - gestbd_net
 

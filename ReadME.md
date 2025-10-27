@@ -13,6 +13,37 @@ hive_server_host=hiveserver2
 
 ## 2. Tablas Externas en Hive
 
+### Crear Tabla en PostgreSQL
+
+```sql
+CREATE DATABASE postgresgesdb
+    WITH
+    OWNER = hive
+    ENCODING = 'UTF8'
+    LOCALE_PROVIDER = 'libc'
+    CONNECTION LIMIT = -1
+    IS_TEMPLATE = False;
+```
+
+o desde el propio interface de PgAdmin crear ```postgresgesdb```
+
+Importar db: 
+
+- Crear usuario que creo el backup ```UserPSQL```
+
+```sql
+CREATE ROLE "UserPSQL" WITH
+	LOGIN
+	SUPERUSER
+	CREATEDB
+	CREATEROLE
+	INHERIT
+	NOREPLICATION
+	BYPASSRLS
+	CONNECTION LIMIT -1;
+```
+- Importar ```postgresgesdb_wikipedia_ner_org_db.backup```
+
 ### Tabla: `wikinerorg` (PostgreSQL)
 
 ```sql
@@ -51,7 +82,21 @@ GROUP BY
 
 ---
 
+### Crear Tabla en MariaDB
+
+```sql
+CREATE DATABASE mariaGESDB
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+```
+
+Importar db: 
+
+- Importar ```mysql_localhostGESDB-mariaGESDB-2024_10_16_12_37_41-dump.sql```
+
+
 ### Tabla: `wikinerper` (MariaDB)
+
 
 ```sql
 CREATE EXTERNAL TABLE wikinerper (
@@ -89,6 +134,14 @@ GROUP BY
 ```
 
 ---
+
+### Crear Tabla en CSV local
+
+Importar db: 
+
+- Copiar localizaciones.csv a ```\warehouse```
+
+
 
 ### Tabla: `wikinerloc` (CSV local)
 
@@ -140,7 +193,7 @@ FROM
 JOIN
     default.wikinerper_count p
 ON
-    o.path = p.path;
+    TRIM(o.path) = TRIM(p.path);
 ```
 
 ---
@@ -156,7 +209,7 @@ FROM
 JOIN
     default.wikinerloc_count l
 ON
-    o.path = l.path;
+    TRIM(o.path) = TRIM(l.path);
 ```
 
 ---

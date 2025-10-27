@@ -29,10 +29,10 @@ o desde el propio interface de PgAdmin crear ```postgresgesdb```
 
 Importar db: 
 
-- Crear usuario que creo el backup ```UserPSQL```
+- Crear usuario que creo el backup ```userPSQL```
 
 ```sql
-CREATE ROLE "UserPSQL" WITH
+CREATE ROLE "userPSQL" WITH
 	LOGIN
 	SUPERUSER
 	CREATEDB
@@ -56,7 +56,7 @@ STORED BY 'org.apache.hive.storage.jdbc.JdbcStorageHandler'
 TBLPROPERTIES (
   "hive.sql.database.type" = "POSTGRES",
   "hive.sql.jdbc.driver" = "org.postgresql.Driver",
-  "hive.sql.jdbc.url" = "jdbc:postgresql://hive4-postgres:5432/postgresgesdb",
+  "hive.sql.jdbc.url" = "jdbc:postgresql://hive4-postgres2:5432/postgresgesdb",
   "hive.sql.dbcp.username" = "hive",
   "hive.sql.dbcp.password" = "password",
   "hive.sql.table" = "wikipedia_ner_org"
@@ -139,7 +139,7 @@ GROUP BY
 
 Importar db: 
 
-- Copiar localizaciones.csv a ```\warehouse```
+- Copiar localizaciones.csv a ```\warehouse``` si no existe
 
 
 
@@ -158,7 +158,7 @@ LOCATION '/opt/hive/data/warehouse/wikinerloc';
 
 **Carga de datos:**
 ```sql
-LOAD DATA INPATH '/opt/hive/data/warehouse/localizaciones.csv' INTO TABLE wikinerloc;
+LOAD DATA LOCAL INPATH '/opt/hive/data/warehouse/localizaciones.csv' INTO TABLE wikinerloc;
 ```
 
 **Consulta:**
@@ -230,7 +230,3 @@ ON
 
 ---
 
-Fin del script.  
-```
-!q
-```

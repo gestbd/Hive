@@ -71,10 +71,11 @@ services:
       POSTGRES_DB: 'metastore_db'
       POSTGRES_USER: 'hive'
       POSTGRES_PASSWORD: 'password'
+      PGDATA: /var/lib/postgresql/data
     ports:
       - '5433:5432'
     volumes:
-      - hive-db2:/var/lib/postgresql
+      - hive-db2:/var/lib/postgresql/data
     networks:
       - gestbd_net
       

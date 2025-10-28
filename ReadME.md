@@ -92,7 +92,7 @@ CREATE DATABASE mariaGESDB
 
 Importar db: 
 
-- Importar ```mysql_localhostGESDB-mariaGESDB-2024_10_16_12_37_41-dump.sql```
+- Importar ```mysql_localhostGESDB-mariaGESDB.sql```
 
 
 ### Tabla: `wikinerper` (MariaDB)
